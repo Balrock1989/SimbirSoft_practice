@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import simbirSoftPractice.demo.model.Item;
+import simbirSoftPractice.demo.model.ItemDto;
 
 @RestController
 @RequestMapping("/api")
@@ -13,8 +13,8 @@ import simbirSoftPractice.demo.model.Item;
 public class ItemController {
 
     @GetMapping("/sayHello")
-    @ApiOperation(value = "show Item", response = Item.class)
-    public Item getHelloWorld(){
-        return new Item("MyName");
+    @ApiOperation(value = "show Item", response = ItemDto.class)
+    public ItemDto getHelloWorld(){
+        return new ItemDto("MyName");
     }
 }

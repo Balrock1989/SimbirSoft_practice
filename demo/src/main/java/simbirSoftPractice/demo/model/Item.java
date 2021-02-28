@@ -1,8 +1,13 @@
 package simbirSoftPractice.demo.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "class Item")
 public class Item {
 
-    String name;
+    @ApiModelProperty(value = "name of Item", example = "phone")
+    private String name;
 
     public Item(String name) {
         this.name = name;

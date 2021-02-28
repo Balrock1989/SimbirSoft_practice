@@ -1,4 +1,4 @@
-package simbirSoftPractice.demo.service.implement;
+package simbirSoftPractice.demo.service.interfaces;
 
 import simbirSoftPractice.demo.dao.entity.Item;
 

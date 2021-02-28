@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import simbirSoftPractice.demo.model.ItemDto;
+import simbirSoftPractice.demo.dto.ItemDto;
 
 @RestController
 @RequestMapping("/api")

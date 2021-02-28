@@ -1,6 +1,7 @@
 package simbirSoftPractice.demo.dao.entity;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "Status")
@@ -15,6 +16,8 @@ public class Status {
     @Enumerated(EnumType.STRING)
     private StatusName name;
 
+    @OneToMany(mappedBy = "status")
+    private Set<Item> items;
     public Status() {
     }
 

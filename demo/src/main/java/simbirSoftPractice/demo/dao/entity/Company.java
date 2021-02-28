@@ -1,10 +1,14 @@
 package simbirSoftPractice.demo.dao.entity;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-@Table(name = "Compane")
-public class Compane {
+@Table(name = "Company")
+public class Company {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,7 +18,10 @@ public class Compane {
     @Column(name = "name")
     private String name;
 
-    public Compane() {
+    @OneToMany(mappedBy = "company")
+    private Set<Item> items;
+
+    public Company() {
     }
 
     public Long getId() {

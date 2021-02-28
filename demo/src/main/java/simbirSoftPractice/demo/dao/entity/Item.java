@@ -20,6 +20,14 @@ public class Item {
     @Column(name = "quantity")
     private int quantity;
 
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
+
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private Status status;
+
     public Item() {
     }
 

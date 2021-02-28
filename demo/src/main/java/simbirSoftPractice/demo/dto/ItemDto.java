@@ -1,4 +1,4 @@
-package simbirSoftPractice.demo.model;
+package simbirSoftPractice.demo.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;

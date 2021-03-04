@@ -1,11 +1,15 @@
 package simbirSoftPractice.demo.dao.entity;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
+
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "Status")
-public class Status {
+public class Status implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,8 +17,7 @@ public class Status {
     private Long id;
 
     @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private StatusName name;
+    private String name;
 
     @OneToMany(mappedBy = "status")
     private Set<Item> items;
@@ -29,11 +32,26 @@ public class Status {
         this.id = id;
     }
 
-    public StatusName getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(StatusName name) {
+    public void setName(String name) {
         this.name = name;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Status status = (Status) o;
+        return Objects.equals(id, status.id) &&
+                name == status.name;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }

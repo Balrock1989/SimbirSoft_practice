@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import simbirSoftPractice.demo.dao.entity.Item;
 import simbirSoftPractice.demo.dto.ItemDto;
 import simbirSoftPractice.demo.service.implement.ItemServiceImpl;
+import simbirSoftPractice.demo.service.interfaces.ItemService;
 
 import java.util.List;
 
@@ -16,26 +17,17 @@ import java.util.List;
 @Api(value = "Item resources", description = "crud operations")
 public class ItemController {
 
-    @Autowired
-    private final ItemServiceImpl itemService;
+    private final ItemService itemService;
 
-    public ItemController(ItemServiceImpl itemService) {
+    public ItemController(ItemService itemService) {
         this.itemService = itemService;
-    }
-
-    @GetMapping("/sayHello")
-    @ApiOperation(value = "show Item", response = ItemDto.class)
-    public ItemDto getHelloWorld(){
-        ItemDto itemDto = new ItemDto();
-        itemDto.setName("my Name");
-        return itemDto;
     }
 
     @PostMapping("/newItem")
     @ApiOperation(value = "add new Item", response = ItemDto.class)
-    public ResponseEntity<ItemDto> newItem(@RequestBody ItemDto itemDto){
+    public ResponseEntity<String> newItem(@RequestBody ItemDto itemDto){
         itemService.save(itemDto);
-        return ResponseEntity.ok(itemDto);
+        return ResponseEntity.ok("successfully save!");
     }
 
     @GetMapping("/findAll")
@@ -46,19 +38,13 @@ public class ItemController {
 
     @PostMapping("/{id}")
     @ApiOperation(value = "delete Item", response = Item.class)
-    public ResponseEntity<Item> deleteById(@PathVariable Long id){
-        Item deleteItem = itemService.getById(id);
-        if (deleteItem != null) {
-            itemService.deleteById(id);
-            return ResponseEntity.ok(deleteItem);
-        }else {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<String> deleteById(@PathVariable Long id){
+       return itemService.deleteById(id);
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "find Item by id", response = Item.class)
-    public Item getById(@PathVariable Long id){
+    public ResponseEntity<Item> getById(@PathVariable Long id){
         return itemService.getById(id);
     }
 }

@@ -21,7 +21,6 @@
           <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:1.2.3" />
           <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:1.2.3" />
           <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-to-slf4j:2.13.3" />
-          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.13.3" />
           <element id="library" level="project" name="Maven: org.slf4j:jul-to-slf4j:1.7.30" />
           <element id="library" level="project" name="Maven: org.yaml:snakeyaml:1.27" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-json:2.4.3" />
@@ -36,9 +35,8 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.3.4" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context:5.3.4" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.3.4" />
-          <element id="library" level="project" name="Maven: org.liquibase:liquibase-core:3.10.3" />
+          <element id="library" level="project" name="Maven: org.liquibase:liquibase-core:4.3.1" />
           <element id="library" level="project" name="Maven: javax.xml.bind:jaxb-api:2.3.1" />
-          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.30" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-actuator:2.4.3" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot:2.4.3" />
           <element id="library" level="project" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:2.3.3" />
@@ -70,6 +68,7 @@
           <element id="library" level="project" name="Maven: io.springfox:springfox-spring-webmvc:3.0.0" />
           <element id="library" level="project" name="Maven: io.springfox:springfox-spring-webflux:3.0.0" />
           <element id="library" level="project" name="Maven: com.fasterxml:classmate:1.5.1" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.30" />
           <element id="library" level="project" name="Maven: org.springframework.plugin:spring-plugin-core:2.0.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.plugin:spring-plugin-metadata:2.0.0.RELEASE" />
           <element id="library" level="project" name="Maven: io.swagger:swagger-annotations:1.5.20" />
@@ -95,6 +94,8 @@
           <element id="library" level="project" name="Maven: com.sun.istack:istack-commons-runtime:3.0.11" />
           <element id="library" level="project" name="Maven: com.sun.activation:jakarta.activation:1.2.2" />
           <element id="library" level="project" name="Maven: org.hibernate:hibernate-entitymanager:5.4.28.Final" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-core:2.14.0" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.13.3" />
         </element>
       </element>
       <element id="directory" name="META-INF">

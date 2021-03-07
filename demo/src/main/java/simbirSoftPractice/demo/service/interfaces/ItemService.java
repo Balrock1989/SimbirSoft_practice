@@ -1,5 +1,6 @@
 package simbirSoftPractice.demo.service.interfaces;
 
+import org.springframework.http.ResponseEntity;
 import simbirSoftPractice.demo.dao.entity.Item;
 import simbirSoftPractice.demo.dto.ItemDto;
 
@@ -9,9 +10,9 @@ public interface ItemService {
 
     List<Item> findAll();
 
-    Item getById(Long id);
+    ResponseEntity<Item> getById(Long id);
 
     void save(ItemDto newItem);
 
-    void deleteById(Long id);
+    ResponseEntity<String> deleteById(Long id);
 }

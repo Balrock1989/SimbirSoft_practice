@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import simbirSoftPractice.demo.dao.entity.Item;
+import simbirSoftPractice.demo.dto.ItemBuyDto;
 import simbirSoftPractice.demo.dto.ItemDto;
 import simbirSoftPractice.demo.service.implement.ItemServiceImpl;
 import simbirSoftPractice.demo.service.interfaces.ItemService;
@@ -46,5 +47,16 @@ public class ItemController {
     @ApiOperation(value = "find Item by id", response = Item.class)
     public ResponseEntity<Item> getById(@PathVariable Long id){
         return itemService.getById(id);
+    }
+
+    @PostMapping("/buy/{id}")
+    @ApiOperation(value = "buy item ", response = Item.class)
+    public ResponseEntity<String> buyItem(@PathVariable Long id){
+        return itemService.buyItem(id);
+    }
+
+    @GetMapping("/buyItemList")
+    public ResponseEntity<List<ItemBuyDto>> listBuyItem(){
+        return itemService.findAllBuyItems();
     }
 }

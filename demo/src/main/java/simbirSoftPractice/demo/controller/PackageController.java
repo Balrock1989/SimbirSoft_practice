@@ -1,5 +1,7 @@
 package simbirSoftPractice.demo.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,32 +15,38 @@ import java.util.List;
 @RestController
 @RequestMapping("/package")
 @RequiredArgsConstructor
+@Api(value = "Package for buy", description = "chosen items storage for buy")
 public class PackageController {
 
     @Autowired
     private final PackageService packageService;
 
     @GetMapping("/list")
+    @ApiOperation(value = "list all items",response = Package.class)
     public ResponseEntity<List<Package>> findAll(){
         return packageService.findAll();
     }
 
     @PostMapping("/add/{id}")
+    @ApiOperation(value = "add item in package", response = Package.class)
     public ResponseEntity<String> addItem(@PathVariable Long id){
         return packageService.addItem(id);
     }
 
     @PostMapping("/clearList")
+    @ApiOperation(value = "clear list if customer cancel all items", response = Package.class)
     public ResponseEntity<String> clearList(){
         return packageService.deleteAllList();
     }
 
     @PostMapping("/delete/{id}")
+    @ApiOperation(value = "delete item from package if customer want so",response = Package.class)
     public ResponseEntity<String> deleteFromPackage(@PathVariable Long id){
         return packageService.deleteItem(id);
     }
 
     @PostMapping("/packageBuy")
+    @ApiOperation(value = "buy all items in package", response = Package.class)
     public ResponseEntity<String> buyPackage(){
         return packageService.buyItems();
     }

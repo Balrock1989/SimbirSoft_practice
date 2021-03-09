@@ -6,14 +6,13 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
 
 @Entity
-@Table(name = "Package")
-@NoArgsConstructor
+@Table(name = "package_debited")
 @Getter
 @Setter
-public class Package implements Serializable {
+@NoArgsConstructor
+public class PackageDebited implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +30,6 @@ public class Package implements Serializable {
     @Column(name = "quantity")
     private int quantity;
 
-
+    @Column(name = "status")
+    private String status;
 }

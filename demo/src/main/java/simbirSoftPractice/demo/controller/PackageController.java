@@ -1,5 +1,6 @@
 package simbirSoftPractice.demo.controller;
 
+import com.sun.xml.bind.v2.runtime.reflect.Lister;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -27,30 +28,35 @@ public class PackageController {
     @GetMapping("/list")
     @ApiOperation(value = "list all items",response = Package.class)
     public ResponseEntity<List<Package>> findAll(){
-        return packageService.findAll();
+        List<Package> packageList = packageService.findAll();
+        return ResponseEntity.ok(packageList);
     }
 
     @PostMapping("/add/{id}")
     @ApiOperation(value = "add item in package", response = Package.class)
-    public ResponseEntity<String> addItem(@PathVariable Long id){
-        return packageService.addItem(id);
+    public ResponseEntity<Package> addItem(@PathVariable Long id){
+        Package aPackage = packageService.addItem(id);
+        return ResponseEntity.ok(aPackage);
     }
 
     @PostMapping("/clearList")
     @ApiOperation(value = "clear list if customer cancel all items", response = Package.class)
-    public ResponseEntity<String> clearList(){
-        return packageService.deleteAllList();
+    public ResponseEntity<List<Package>> clearList(){
+        List<Package> packageList = packageService.deleteAllList();
+        return ResponseEntity.ok(packageList);
     }
 
     @PostMapping("/delete/{id}")
     @ApiOperation(value = "delete item from package if customer want so",response = Package.class)
-    public ResponseEntity<String> deleteFromPackage(@PathVariable Long id){
-        return packageService.deleteItem(id);
+    public ResponseEntity<Package> deleteFromPackage(@PathVariable Long id){
+        Package aPackage = packageService.deleteItem(id);
+        return ResponseEntity.ok(aPackage);
     }
 
     @PostMapping("/packageBuy")
     @ApiOperation(value = "buy all items in package", response = Package.class)
-    public ResponseEntity<String> buyPackage(){
-        return packageService.buyItems();
+    public ResponseEntity<List<Package>> buyPackage(){
+        List<Package> packageList = packageService.buyItems();
+        return ResponseEntity.ok(packageList);
     }
 }

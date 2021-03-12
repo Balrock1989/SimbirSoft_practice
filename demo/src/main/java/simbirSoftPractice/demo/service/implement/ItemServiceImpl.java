@@ -25,16 +25,14 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 public class ItemServiceImpl implements ItemService {
 
     private static Logger logger = getLogger(ItemServiceImpl.class);
-    @Autowired
+
     private final ItemRepository itemRepo;
 
     @Autowired
     private EntityManager entityManager;
 
-    @Autowired
     private final CompanyRepository companyRepo;
 
-    @Autowired
     private final StatusRepository statusRepo;
 
     public ItemServiceImpl(ItemRepository itemRepo,
@@ -55,39 +53,40 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ResponseEntity<Item> getById(Long id) {
+    public Item getById(Long id) {
         if (itemRepo.findById(id).isPresent()){
             Item item = itemRepo.findById(id).get();
             logger.info("successfully find item by id!");
-            return ResponseEntity.ok(item);
+            return item;
         }else{
             logger.error("EXCEPTION when delete item!");
-            return ResponseEntity.notFound().build();
+            return null;
         }
 
     }
 
     @Override
-    public void save(ItemDto newItem) {
+    public ItemDto save(ItemDto newItem) {
         itemRepo.save(newItem.itemDtoToItem(newItem));
         logger.info("successfully save new item!");
+        return newItem;
     }
 
     @Override
-    public ResponseEntity<String> deleteById(Long id) {
+    public Item deleteById(Long id) {
         if (itemRepo.findById(id).isPresent()){
             Item deleteItem = itemRepo.findById(id).get();
             itemRepo.delete(deleteItem);
             logger.info("successfully delete item!");
-            return ResponseEntity.ok("successfully delete!");
+            return deleteItem;
         }else {
             logger.error("EXCEPTION when delete item!");
-            return ResponseEntity.ok("error!!!");
+            return null;
         }
     }
 
     @Override
-    public ResponseEntity<String> buyItem(Long id) {
+    public Item buyItem(Long id) {
         if (itemRepo.findById(id).isPresent()){
             Item item = itemRepo.findById(id).get();
             logger.info("Item found");
@@ -96,16 +95,15 @@ public class ItemServiceImpl implements ItemService {
             item.setStatus(status);
             itemRepo.save(item);
             logger.info("Item buy");
-            return ResponseEntity.ok("successfully buy item");
+            return item;
         }else {
-            logger.warn("Item don't found");
             logger.error("item don't buy");
-            return ResponseEntity.ok("error buy");
+            return null;
         }
     }
 
     @Override
-    public ResponseEntity<List<ItemBuyDto>> findAllBuyItems() {
+    public List<ItemBuyDto> findAllBuyItems() {
         List<ItemBuyDto> itemsBuyDto = entityManager.createQuery("select i.id," +
                 " i.name, i.price,i.quantity,s.name from Item as i inner join"
                         +" Status as s on s.id = i.id where s.name in ?1 ")
@@ -116,6 +114,6 @@ public class ItemServiceImpl implements ItemService {
         }else{
             logger.info("Items list");
         }
-        return ResponseEntity.ok(itemsBuyDto);
+        return itemsBuyDto;
     }
 }

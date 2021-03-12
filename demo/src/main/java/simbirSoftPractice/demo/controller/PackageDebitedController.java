@@ -21,30 +21,34 @@ import java.util.List;
 @Api(value = "package for debited",description = "collect all items and debited them")
 public class PackageDebitedController {
 
-    @Autowired
+
     private final PackageDebitedService debitedService;
 
     @PostMapping("/add/{id}")
     @ApiOperation(value = "chose items for debited",response = PackageDebited.class)
     public ResponseEntity<PackageDebited> addItem(@PathVariable Long id){
-        return debitedService.addItem(id);
+        PackageDebited itemDebited = debitedService.addItem(id);
+        return ResponseEntity.ok(itemDebited);
     }
 
     @PostMapping("/delete/{id}")
     @ApiOperation(value = "delete items from package if they go by error", response = PackageDebited.class)
     public ResponseEntity<PackageDebited> deleteItem(@PathVariable Long id){
-        return debitedService.deleteItem(id);
+        PackageDebited itemDebited = debitedService.deleteItem(id);
+        return ResponseEntity.ok(itemDebited);
     }
 
     @GetMapping("/list")
     @ApiOperation(value = "1 part debited , list all items prepared for debited",response = PackageDebited.class)
     public ResponseEntity<List<PackageDebited>> findAll(){
-        return debitedService.findAll();
+        List<PackageDebited> debitedList = debitedService.findAll();
+        return ResponseEntity.ok(debitedList);
     }
 
     @PostMapping("/confirm")
     @ApiOperation(value = "2 part debited, confirm all items",response = PackageDebited.class)
     public ResponseEntity<List<PackageDebited>> confirmMethodDebited(){
-        return debitedService.listToDebited();
+        List<PackageDebited> debitedList = debitedService.listToDebited();
+        return ResponseEntity.ok(debitedList);
     }
 }

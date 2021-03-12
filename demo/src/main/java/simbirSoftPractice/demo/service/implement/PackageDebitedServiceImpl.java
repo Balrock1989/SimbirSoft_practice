@@ -2,7 +2,6 @@ package simbirSoftPractice.demo.service.implement;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Logger;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import simbirSoftPractice.demo.dao.entity.Item;
 import simbirSoftPractice.demo.dao.entity.PackageDebited;
@@ -36,35 +35,35 @@ public class PackageDebitedServiceImpl implements PackageDebitedService {
     }
 
     @Override
-    public ResponseEntity<PackageDebited> addItem(Long id) {
+    public PackageDebited addItem(Long id) {
         if(itemRepo.findById(id).isPresent()){
             Item item = itemRepo.findById(id).get();
             PackageDebited itemDebited = itemToPackageDebited(item);
             debitedRepo.save(itemDebited);
             logger.info("successfully add in package");
-            return ResponseEntity.ok(itemDebited);
+            return itemDebited;
         }else{
             logger.warn("error add in package");
-            return ResponseEntity.ok(null);
+            return null;
         }
     }
 
     @Override
-    public ResponseEntity<PackageDebited> deleteItem(Long id) {
+    public PackageDebited deleteItem(Long id) {
         if (debitedRepo.findById(id).isPresent()){
             logger.info("item from package found");
             PackageDebited itemDebited = debitedRepo.findById(id).get();
             debitedRepo.delete(itemDebited);
             logger.info("item from package delete");
-            return ResponseEntity.ok(itemDebited);
+            return itemDebited;
         }else{
             logger.warn("item from package don't delete");
-            return ResponseEntity.ok(null);
+            return null;
         }
     }
 
     @Override
-    public ResponseEntity<List<PackageDebited>> listToDebited() {
+    public List<PackageDebited> listToDebited() {
         Status status = new Status();
         status.setName("DEBITED");
         if (debitedRepo.findAll().size() != 0){
@@ -85,17 +84,17 @@ public class PackageDebitedServiceImpl implements PackageDebitedService {
             List<PackageDebited> debitedList = debitedRepo.findAll();
             debitedRepo.deleteAll();
             logger.info("successfully debited");
-            return ResponseEntity.ok(debitedList);
+            return debitedList;
         }else{
             logger.warn("error debited");
-            return ResponseEntity.ok(null);
+            return null;
         }
     }
 
     @Override
-    public ResponseEntity<List<PackageDebited>> findAll() {
+    public List<PackageDebited> findAll() {
         List<PackageDebited> packageList = debitedRepo.findAll();
         logger.info("List from package found");
-        return ResponseEntity.ok(packageList);
+        return packageList;
     }
 }

@@ -2,7 +2,6 @@ package simbirSoftPractice.demo.service.implement;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import simbirSoftPractice.demo.dao.entity.Item;
@@ -21,10 +20,9 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 public class PackageServiceImpl implements PackageService {
 
     private static Logger logger = getLogger(PackageServiceImpl.class);
-    @Autowired
+
     private final PackageRepository packageRepo;
 
-    @Autowired
     private final ItemRepository itemRepo;
 
     private Package itemToPackage(Item item){
@@ -37,73 +35,80 @@ public class PackageServiceImpl implements PackageService {
     }
 
     @Override
-    public ResponseEntity<String> addItem(Long id) {
+    public Package addItem(Long id) {
         if(itemRepo.findById(id).isPresent()){
             Item item = itemRepo.findById(id).get();
-            packageRepo.save(itemToPackage(item));
+            Package aPackage = itemToPackage(item);
+            packageRepo.save(aPackage);
             logger.info("successfully add in package");
-            return ResponseEntity.ok("successfully add in package");
+            return aPackage;
         }else{
             logger.warn("error add in package");
-            return ResponseEntity.ok("error add in package");
+            return null;
         }
     }
 
     @Override
-    public ResponseEntity<String> deleteItem(Long id) {
+    public Package deleteItem(Long id) {
         if (packageRepo.findById(id).isPresent()){
             logger.info("item from package found");
-            packageRepo.deleteById(id);
+            Package aPackage = packageRepo.findById(id).get();
+            packageRepo.delete(aPackage);
             logger.info("item from package delete");
-            return ResponseEntity.ok("successfully delete");
+            return aPackage;
         }else{
-            logger.warn("item from package don't found");
             logger.warn("item from package don't delete");
-            return ResponseEntity.ok("error delete item");
+            return null;
         }
     }
 
     @Override
-    public ResponseEntity<String> deleteAllList() {
+    public List<Package> deleteAllList() {
         if (packageRepo.findAll().size() != 0){
             logger.info("list from package found");
+            List<Package> packageList = packageRepo.findAll();
             packageRepo.deleteAll();
             logger.info("List from package delete");
-            return ResponseEntity.ok("successfully clear package");
+            return packageList;
         }else{
             logger.warn("list from package is empty");
-            return ResponseEntity.ok("package is empty");
+            return null;
         }
     }
 
     @Override
-    public ResponseEntity<List<Package>> findAll() {
+    public List<Package> findAll() {
         List<Package> packageList = packageRepo.findAll();
         logger.info("List from package found");
-        return ResponseEntity.ok(packageList);
+        return packageList;
     }
 
     @Override
-    public ResponseEntity<String> buyItems() {
+    public List<Package> buyItems() {
         Status status = new Status();
         status.setName("BUY");
         if (packageRepo.findAll().size() != 0){
             List<Package> packageList = packageRepo.findAll();
             List<Item> itemList = (List<Item>) itemRepo.findAll();
             for(int index = 0; index<packageList.size(); index++){
-                for(int j = 0; j<itemList.size(); j++){
-                    if(packageList.get(index).getItemId().equals(itemList.get(j).getId())){
-                        itemList.get(j).setStatus(status);
-                        logger.info("Item buy:"+itemList.get(j).toString());
+                for(int jindex = 0; jindex<itemList.size(); jindex++){
+                    Package aPackage = packageList.get(index);
+                    Long aPackageId = aPackage.getItemId();
+                    Item item = itemList.get(jindex);
+                    Long itemId = item.getId();
+                    if(aPackageId.equals(itemId)){
+                        itemList.get(jindex).setStatus(status);
+                        logger.info("Item buy:"+itemList.get(jindex).toString());
                     }
                 }
             }
+            List<Package> aPackageList = packageRepo.findAll();
             packageRepo.deleteAll();
             logger.info("successfully buy");
-            return ResponseEntity.ok("successfully buy");
+            return aPackageList;
         }else{
             logger.warn("error buy");
-            return ResponseEntity.ok("error buy");
+            return null;
         }
     }
 }

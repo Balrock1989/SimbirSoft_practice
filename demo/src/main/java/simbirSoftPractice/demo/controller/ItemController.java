@@ -42,24 +42,28 @@ public class ItemController {
 
     @PostMapping("/{id}")
     @ApiOperation(value = "delete Item", response = Item.class)
-    public ResponseEntity<String> deleteById(@PathVariable Long id){
-       return itemService.deleteById(id);
+    public ResponseEntity<Item> deleteById(@PathVariable Long id){
+       Item item = itemService.deleteById(id);
+        return ResponseEntity.ok(item);
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "find Item by id", response = Item.class)
     public ResponseEntity<Item> getById(@PathVariable Long id){
-        return itemService.getById(id);
+        Item item = itemService.getById(id);
+        return ResponseEntity.ok(item);
     }
 
     @PostMapping("/buy/{id}")
     @ApiOperation(value = "buy item ", response = Item.class)
-    public ResponseEntity<String> buyItem(@PathVariable Long id){
-        return itemService.buyItem(id);
+    public ResponseEntity<Item> buyItem(@PathVariable Long id){
+        Item item = itemService.buyItem(id);
+        return ResponseEntity.ok(item);
     }
 
     @GetMapping("/buyItemList")
     public ResponseEntity<List<ItemBuyDto>> listBuyItem(){
-        return itemService.findAllBuyItems();
+        List<ItemBuyDto> itemBuyDtoList = itemService.findAllBuyItems();
+        return ResponseEntity.ok(itemBuyDtoList);
     }
 }

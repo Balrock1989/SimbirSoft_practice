@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import simbirSoftPractice.demo.dao.entity.Item;
-import simbirSoftPractice.demo.dao.entity.Package;
 
 @Getter
 @Setter

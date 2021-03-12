@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface PackageDebitedService {
 
-    ResponseEntity<String> addItem(Long id);
+    ResponseEntity<PackageDebited> addItem(Long id);
 
-    ResponseEntity<String> deleteItem(Long id);
+    ResponseEntity<PackageDebited> deleteItem(Long id);
 
-    ResponseEntity<String> listToDebited();
+    ResponseEntity<List<PackageDebited>> listToDebited();
 
     ResponseEntity<List<PackageDebited>> findAll();
 }

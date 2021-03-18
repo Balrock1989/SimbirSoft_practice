@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "package_debited")
@@ -37,4 +38,7 @@ public class PackageDebited implements Serializable {
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "date_time")
+    private LocalDateTime dateTime;
 }

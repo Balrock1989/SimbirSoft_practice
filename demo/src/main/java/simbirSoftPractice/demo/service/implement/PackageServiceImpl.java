@@ -6,9 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import simbirSoftPractice.demo.dao.entity.Item;
 import simbirSoftPractice.demo.dao.entity.Package;
+import simbirSoftPractice.demo.dao.entity.ShopWithItems;
 import simbirSoftPractice.demo.dao.entity.Status;
 import simbirSoftPractice.demo.dao.repository.ItemRepository;
 import simbirSoftPractice.demo.dao.repository.PackageRepository;
+import simbirSoftPractice.demo.dao.repository.ShopWithItemsRepository;
 import simbirSoftPractice.demo.service.interfaces.PackageService;
 
 import java.util.List;
@@ -25,12 +27,15 @@ public class PackageServiceImpl implements PackageService {
 
     private final ItemRepository itemRepo;
 
+    private final ShopWithItemsRepository shopWithItemsRepo;
+
     private Package itemToPackage(Item item){
         Package aPackage = new Package();
         aPackage.setItemId(item.getId());
         aPackage.setName(item.getName());
         aPackage.setPrice(item.getPrice());
         aPackage.setQuantity(item.getQuantity());
+        aPackage.setShopName(item.getShopName());
         return aPackage;
     }
 
@@ -103,6 +108,7 @@ public class PackageServiceImpl implements PackageService {
                 }
             }
             List<Package> aPackageList = packageRepo.findAll();
+            createReport(aPackageList);
             packageRepo.deleteAll();
             logger.info("successfully buy");
             return aPackageList;
@@ -110,5 +116,18 @@ public class PackageServiceImpl implements PackageService {
             logger.warn("error buy");
             return null;
         }
+    }
+
+    private ShopWithItems createReport(List<Package> packageList){
+        ShopWithItems report = new ShopWithItems();
+        report.setQuantity(packageList.size());
+        int pay = 0 ;
+        for(int index = 0; index<packageList.size();index++){
+            pay += packageList.get(index).getPrice();
+        }
+        report.setPay(pay);
+        report.setShopName(packageList.get(0).getShopName());
+        shopWithItemsRepo.save(report);
+        return report;
     }
 }

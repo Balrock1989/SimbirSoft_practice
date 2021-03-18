@@ -41,4 +41,5 @@ public class PackageDebited implements Serializable {
 
     @Column(name = "date_time")
     private LocalDateTime dateTime;
+
 }

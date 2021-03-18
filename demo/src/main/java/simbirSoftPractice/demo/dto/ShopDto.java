@@ -27,4 +27,17 @@ public class ShopDto {
                             1,1,1,1);
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime dateTimeEnd = LocalDateTime.now();
+
+    @Override
+    public String toString() {
+        return "ShopDto{" +
+                "shopName='" + shopName + '\'' +
+                ", status='" + status + '\'' +
+                ", earnings=" + earnings +
+                ", debitedItems=" + debitedItems +
+                ", middlePrice=" + middlePrice +
+                ", dateTimeStart=" + dateTimeStart +
+                ", dateTimeEnd=" + dateTimeEnd +
+                '}';
+    }
 }

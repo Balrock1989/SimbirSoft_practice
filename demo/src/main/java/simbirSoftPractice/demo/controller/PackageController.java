@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import simbirSoftPractice.demo.dao.entity.Item;
 import simbirSoftPractice.demo.dao.entity.Package;
 import simbirSoftPractice.demo.service.interfaces.PackageService;
 
@@ -34,8 +35,8 @@ public class PackageController {
 
     @PostMapping("/add/{id}")
     @ApiOperation(value = "add item in package", response = Package.class)
-    public ResponseEntity<Package> addItem(@PathVariable Long id){
-        Package aPackage = packageService.addItem(id);
+    public ResponseEntity<Item> addItem(@PathVariable Long id){
+        Item aPackage = packageService.addItem(id).get();
         return ResponseEntity.ok(aPackage);
     }
 
@@ -49,7 +50,7 @@ public class PackageController {
     @PostMapping("/delete/{id}")
     @ApiOperation(value = "delete item from package if customer want so",response = Package.class)
     public ResponseEntity<Package> deleteFromPackage(@PathVariable Long id){
-        Package aPackage = packageService.deleteItem(id);
+        Package aPackage = packageService.deleteItem(id).get();
         return ResponseEntity.ok(aPackage);
     }
 

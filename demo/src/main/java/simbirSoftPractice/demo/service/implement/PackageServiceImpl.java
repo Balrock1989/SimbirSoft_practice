@@ -2,7 +2,6 @@ package simbirSoftPractice.demo.service.implement;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Logger;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import simbirSoftPractice.demo.dao.entity.Item;
 import simbirSoftPractice.demo.dao.entity.Package;
@@ -11,9 +10,11 @@ import simbirSoftPractice.demo.dao.entity.Status;
 import simbirSoftPractice.demo.dao.repository.ItemRepository;
 import simbirSoftPractice.demo.dao.repository.PackageRepository;
 import simbirSoftPractice.demo.dao.repository.ShopWithItemsRepository;
+import simbirSoftPractice.demo.dto.Mapper;
 import simbirSoftPractice.demo.service.interfaces.PackageService;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
@@ -29,48 +30,38 @@ public class PackageServiceImpl implements PackageService {
 
     private final ShopWithItemsRepository shopWithItemsRepo;
 
-    private Package itemToPackage(Item item){
-        Package aPackage = new Package();
-        aPackage.setItemId(item.getId());
-        aPackage.setName(item.getName());
-        aPackage.setPrice(item.getPrice());
-        aPackage.setQuantity(item.getQuantity());
-        aPackage.setShopName(item.getShopName());
-        return aPackage;
-    }
+    private Mapper mapper = new Mapper();
 
     @Override
-    public Package addItem(Long id) {
+    public Optional<Item> addItem(Long id) {
         if(itemRepo.findById(id).isPresent()){
-            Item item = itemRepo.findById(id).get();
-            Package aPackage = itemToPackage(item);
+            Optional<Item> item = itemRepo.findById(id);
+            Package aPackage = mapper.itemToPackage(item.get());
             packageRepo.save(aPackage);
             logger.info("successfully add in package");
-            return aPackage;
+            return item;
         }else{
             logger.warn("error add in package");
-            return null;
+            return Optional.empty();
         }
     }
 
     @Override
-    public Package deleteItem(Long id) {
+    public Optional<Package> deleteItem(Long id) {
         if (packageRepo.findById(id).isPresent()){
-            logger.info("item from package found");
-            Package aPackage = packageRepo.findById(id).get();
-            packageRepo.delete(aPackage);
+            Optional<Package> aPackage = packageRepo.findById(id);
+            packageRepo.delete(aPackage.get());
             logger.info("item from package delete");
             return aPackage;
         }else{
             logger.warn("item from package don't delete");
-            return null;
+            return Optional.empty();
         }
     }
 
     @Override
     public List<Package> deleteAllList() {
         if (packageRepo.findAll().size() != 0){
-            logger.info("list from package found");
             List<Package> packageList = packageRepo.findAll();
             packageRepo.deleteAll();
             logger.info("List from package delete");
@@ -95,23 +86,22 @@ public class PackageServiceImpl implements PackageService {
         if (packageRepo.findAll().size() != 0){
             List<Package> packageList = packageRepo.findAll();
             List<Item> itemList = (List<Item>) itemRepo.findAll();
-            for(int index = 0; index<packageList.size(); index++){
-                for(int jindex = 0; jindex<itemList.size(); jindex++){
-                    Package aPackage = packageList.get(index);
+            for(int i = 0; i<packageList.size(); i++){
+                for(int j = 0; j<itemList.size(); j++){
+                    Package aPackage = packageList.get(i);
                     Long aPackageId = aPackage.getItemId();
-                    Item item = itemList.get(jindex);
+                    Item item = itemList.get(j);
                     Long itemId = item.getId();
                     if(aPackageId.equals(itemId)){
-                        itemList.get(jindex).setStatus(status);
-                        logger.info("Item buy:"+itemList.get(jindex).toString());
+                        itemList.get(j).setStatus(status);
                     }
                 }
             }
-            List<Package> aPackageList = packageRepo.findAll();
-            createReport(aPackageList);
+            List<Package> packageListAfterChangeStatus = packageRepo.findAll();
+            createReport(packageListAfterChangeStatus);
             packageRepo.deleteAll();
             logger.info("successfully buy");
-            return aPackageList;
+            return packageListAfterChangeStatus;
         }else{
             logger.warn("error buy");
             return null;
@@ -128,6 +118,7 @@ public class PackageServiceImpl implements PackageService {
         report.setPay(pay);
         report.setShopName(packageList.get(0).getShopName());
         shopWithItemsRepo.save(report);
+        logger.info(" create report");
         return report;
     }
 }

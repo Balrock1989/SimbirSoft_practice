@@ -1,14 +1,16 @@
 package simbirSoftPractice.demo.service.interfaces;
 
+import simbirSoftPractice.demo.dao.entity.Item;
 import simbirSoftPractice.demo.dao.entity.Package;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PackageService {
 
-    Package addItem(Long id);
+    Optional<Item> addItem(Long id);
 
-    Package deleteItem(Long id);
+    Optional<Package> deleteItem(Long id);
 
     List<Package> deleteAllList();
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import simbirSoftPractice.demo.dao.entity.Item;
 import simbirSoftPractice.demo.dao.entity.PackageDebited;
 import simbirSoftPractice.demo.service.interfaces.PackageDebitedService;
 
@@ -26,15 +27,15 @@ public class PackageDebitedController {
 
     @PostMapping("/add/{id}")
     @ApiOperation(value = "chose items for debited",response = PackageDebited.class)
-    public ResponseEntity<PackageDebited> addItem(@PathVariable Long id){
-        PackageDebited itemDebited = debitedService.addItem(id);
+    public ResponseEntity<Item> addItem(@PathVariable Long id){
+        Item itemDebited = debitedService.addItem(id).get();
         return ResponseEntity.ok(itemDebited);
     }
 
     @PostMapping("/delete/{id}")
     @ApiOperation(value = "delete items from package if they go by error", response = PackageDebited.class)
     public ResponseEntity<PackageDebited> deleteItem(@PathVariable Long id){
-        PackageDebited itemDebited = debitedService.deleteItem(id);
+        PackageDebited itemDebited = debitedService.deleteItem(id).get();
         return ResponseEntity.ok(itemDebited);
     }
 

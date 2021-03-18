@@ -8,9 +8,11 @@ import simbirSoftPractice.demo.dao.entity.PackageDebited;
 import simbirSoftPractice.demo.dao.entity.Status;
 import simbirSoftPractice.demo.dao.repository.ItemRepository;
 import simbirSoftPractice.demo.dao.repository.PackageDebitedRepository;
+import simbirSoftPractice.demo.dto.Mapper;
 import simbirSoftPractice.demo.service.interfaces.PackageDebitedService;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
@@ -24,41 +26,31 @@ public class PackageDebitedServiceImpl implements PackageDebitedService {
 
     private final ItemRepository itemRepo;
 
-    private PackageDebited itemToPackageDebited(Item item){
-        PackageDebited packageDebited = new PackageDebited();
-        packageDebited.setItemId(item.getId());
-        packageDebited.setName(item.getName());
-        packageDebited.setPrice(item.getPrice());
-        packageDebited.setQuantity(item.getQuantity());
-        packageDebited.setStatus(item.getStatus().getName());
-        return packageDebited;
-    }
-
+    private Mapper mapper = new Mapper();
     @Override
-    public PackageDebited addItem(Long id) {
+    public Optional<Item> addItem(Long id) {
         if(itemRepo.findById(id).isPresent()){
-            Item item = itemRepo.findById(id).get();
-            PackageDebited itemDebited = itemToPackageDebited(item);
+            Optional<Item> item = itemRepo.findById(id);
+            PackageDebited itemDebited = mapper.itemToPackageDebited(item.get());
             debitedRepo.save(itemDebited);
             logger.info("successfully add in package");
-            return itemDebited;
+            return item;
         }else{
             logger.warn("error add in package");
-            return null;
+            return Optional.empty();
         }
     }
 
     @Override
-    public PackageDebited deleteItem(Long id) {
+    public Optional<PackageDebited> deleteItem(Long id) {
         if (debitedRepo.findById(id).isPresent()){
-            logger.info("item from package found");
-            PackageDebited itemDebited = debitedRepo.findById(id).get();
-            debitedRepo.delete(itemDebited);
+            Optional<PackageDebited> itemDebited = debitedRepo.findById(id);
+            debitedRepo.delete(itemDebited.get());
             logger.info("item from package delete");
             return itemDebited;
         }else{
             logger.warn("item from package don't delete");
-            return null;
+            return Optional.empty();
         }
     }
 
@@ -69,15 +61,14 @@ public class PackageDebitedServiceImpl implements PackageDebitedService {
         if (debitedRepo.findAll().size() != 0){
             List<PackageDebited> packageDebitedList = debitedRepo.findAll();
             List<Item> itemList = (List<Item>) itemRepo.findAll();
-            for(int index = 0; index<packageDebitedList.size(); index++){
-                for(int jindex = 0; jindex<itemList.size(); jindex++){
-                    PackageDebited itemDebited = packageDebitedList.get(index);
+            for(int i = 0; i<packageDebitedList.size(); i++){
+                for(int j = 0; j<itemList.size(); j++){
+                    PackageDebited itemDebited = packageDebitedList.get(i);
                     Long itemDebitedId = itemDebited.getItemId();
-                    Item item = itemList.get(jindex);
+                    Item item = itemList.get(j);
                     Long itemId = item.getId();
                     if(itemDebitedId.equals(itemId)){
-                        itemList.get(jindex).setStatus(status);
-                        logger.info("Item debited:"+itemList.get(jindex).toString());
+                        itemList.get(j).setStatus(status);
                     }
                 }
             }

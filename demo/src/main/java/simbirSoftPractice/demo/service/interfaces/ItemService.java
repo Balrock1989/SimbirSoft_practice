@@ -1,22 +1,22 @@
 package simbirSoftPractice.demo.service.interfaces;
 
 import simbirSoftPractice.demo.dao.entity.Item;
-import simbirSoftPractice.demo.dto.ItemBuyDto;
 import simbirSoftPractice.demo.dto.ItemDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ItemService {
 
     List<Item> findAll();
 
-    Item getById(Long id);
+    Optional<Item> getById(Long id);
 
     ItemDto save(ItemDto newItem);
 
-    Item deleteById(Long id);
+    Optional<Item> deleteById(Long id);
 
-    Item buyItem(Long id);
+    Optional<Item> buyItem(Long id);
 
-    List<ItemBuyDto> findAllBuyItems();
+    List<Item> findAllBuyItems();
 }

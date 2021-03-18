@@ -19,4 +19,8 @@ public interface ItemService {
     Optional<Item> buyItem(Long id);
 
     List<Item> findAllBuyItems();
+
+    List<Item> findAllByInaccurateMatchNameItem(String value);
+
+    List<Item> findAllByInaccurateMatchProductGroup(String value);
 }

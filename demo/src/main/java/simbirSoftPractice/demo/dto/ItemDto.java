@@ -31,6 +31,7 @@ public class ItemDto {
     private String companyDto;
     @ApiModelProperty(value = "shop name where item", example = "m.video")
     private String shopName;
+    private String value;
 
     public Item itemDtoToItem(ItemDto newItem){
         Item item = new Item();

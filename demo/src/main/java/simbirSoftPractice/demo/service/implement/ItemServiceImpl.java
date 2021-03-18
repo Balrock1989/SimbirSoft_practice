@@ -98,4 +98,18 @@ public class ItemServiceImpl implements ItemService {
         }
         return items;
     }
+
+    @Override
+    public List<Item> findAllByInaccurateMatchNameItem(String value) {
+        List<Item> itemList = itemRepo.findAllByInaccurateMatchNameItem(value);
+        return itemList;
+    }
+
+    @Override
+    public List<Item> findAllByInaccurateMatchProductGroup(String value) {
+        List<Item> itemList = itemRepo.findAllByInaccurateMatchProductGroup(value);
+        return itemList;
+    }
+
+
 }

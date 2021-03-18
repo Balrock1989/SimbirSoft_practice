@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import simbirSoftPractice.demo.dao.entity.Item;
 import simbirSoftPractice.demo.dto.ItemBuyDto;
@@ -65,5 +66,17 @@ public class ItemController {
     public ResponseEntity<List<Item>> listBuyItem(){
         List<Item> itemBuyDtoList = itemService.findAllBuyItems();
         return ResponseEntity.ok(itemBuyDtoList);
+    }
+
+    @GetMapping("/searchNameItems")
+    public ResponseEntity<List<Item>> findAllByValueNameItems(@RequestBody ItemDto itemDto){
+        List<Item> itemList = itemService.findAllByInaccurateMatchNameItem(itemDto.getValue());
+        return ResponseEntity.ok(itemList);
+    }
+
+    @GetMapping("/searchProductGroup")
+    public ResponseEntity<List<Item>> findAllByValueProductGroup(@RequestBody ItemDto itemDto){
+        List<Item> itemList = itemService.findAllByInaccurateMatchProductGroup(itemDto.getValue());
+        return ResponseEntity.ok(itemList);
     }
 }

@@ -13,6 +13,12 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends CrudRepository<Item,Long> {
 
+    @Query(value = "select i from Item i where concat(i.productGroup,' ') like concat('%', :value ,'%') ")
+    List<Item> findAllByInaccurateMatchProductGroup(@Param("value")String value);
+
+    @Query(value = "select i from Item i where concat(' ',i.name,' ') like concat('%', :value ,'%') ")
+    List<Item> findAllByInaccurateMatchNameItem(@Param("value")String value);
+
     @Query(value = "select i from Item as i where i.status.name in :name")
     List<Item> findAllBuyItems(@Param("name")String name);
 

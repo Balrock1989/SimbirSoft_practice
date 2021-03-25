@@ -2,18 +2,14 @@ package simbirSoftPractice.demo.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class ShopDto {
 
     private String shopName;
@@ -28,16 +24,5 @@ public class ShopDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime dateTimeEnd = LocalDateTime.now();
 
-    @Override
-    public String toString() {
-        return "ShopDto{" +
-                "shopName='" + shopName + '\'' +
-                ", status='" + status + '\'' +
-                ", earnings=" + earnings +
-                ", debitedItems=" + debitedItems +
-                ", middlePrice=" + middlePrice +
-                ", dateTimeStart=" + dateTimeStart +
-                ", dateTimeEnd=" + dateTimeEnd +
-                '}';
-    }
+
 }

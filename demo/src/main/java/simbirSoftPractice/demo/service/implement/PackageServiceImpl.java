@@ -1,6 +1,7 @@
 package simbirSoftPractice.demo.service.implement;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import simbirSoftPractice.demo.dao.entity.Item;
@@ -16,13 +17,10 @@ import simbirSoftPractice.demo.service.interfaces.PackageService;
 import java.util.List;
 import java.util.Optional;
 
-import static org.apache.logging.log4j.LogManager.getLogger;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PackageServiceImpl implements PackageService {
-
-    private static Logger logger = getLogger(PackageServiceImpl.class);
 
     private final PackageRepository packageRepo;
 
@@ -38,10 +36,9 @@ public class PackageServiceImpl implements PackageService {
             Optional<Item> item = itemRepo.findById(id);
             Package aPackage = mapper.itemToPackage(item.get());
             packageRepo.save(aPackage);
-            logger.info("successfully add in package");
             return item;
         }else{
-            logger.warn("error add in package");
+            log.warn("Error add in package! Method: addItem "+id+", class: PackageServiceImpl");
             return Optional.empty();
         }
     }
@@ -51,10 +48,9 @@ public class PackageServiceImpl implements PackageService {
         if (packageRepo.findById(id).isPresent()){
             Optional<Package> aPackage = packageRepo.findById(id);
             packageRepo.delete(aPackage.get());
-            logger.info("item from package delete");
             return aPackage;
         }else{
-            logger.warn("item from package don't delete");
+            log.warn("Item from package don't delete! Method: deleteItem "+id+", class: PackageServiceImpl");
             return Optional.empty();
         }
     }
@@ -64,10 +60,9 @@ public class PackageServiceImpl implements PackageService {
         if (packageRepo.findAll().size() != 0){
             List<Package> packageList = packageRepo.findAll();
             packageRepo.deleteAll();
-            logger.info("List from package delete");
             return packageList;
         }else{
-            logger.warn("list from package is empty");
+            log.warn("List from package is empty! Method: deleteAllList , class: PackageServiceImpl");
             return null;
         }
     }
@@ -75,7 +70,6 @@ public class PackageServiceImpl implements PackageService {
     @Override
     public List<Package> findAll() {
         List<Package> packageList = packageRepo.findAll();
-        logger.info("List from package found");
         return packageList;
     }
 
@@ -100,10 +94,9 @@ public class PackageServiceImpl implements PackageService {
             List<Package> packageListAfterChangeStatus = packageRepo.findAll();
             createReport(packageListAfterChangeStatus);
             packageRepo.deleteAll();
-            logger.info("successfully buy");
             return packageListAfterChangeStatus;
         }else{
-            logger.warn("error buy");
+            log.warn("Error when it bought items! , class: PackageServiceImpl");
             return null;
         }
     }
@@ -118,7 +111,6 @@ public class PackageServiceImpl implements PackageService {
         report.setPay(pay);
         report.setShopName(packageList.get(0).getShopName());
         shopWithItemsRepo.save(report);
-        logger.info(" create report");
         return report;
     }
 }

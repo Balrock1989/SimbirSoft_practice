@@ -3,6 +3,7 @@ package simbirSoftPractice.demo.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,8 +13,7 @@ import simbirSoftPractice.demo.dao.entity.Status;
 
 
 @ApiModel(value = "class Item")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class ItemDto {
 
@@ -48,15 +48,4 @@ public class ItemDto {
         return item;
     }
 
-    @Override
-    public String toString() {
-        return "ItemDto{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", quantity=" + quantity +
-                ", status=" + status +
-                ", companyDto='" + companyDto + '\'' +
-                '}';
-    }
 }

@@ -2,16 +2,12 @@ package simbirSoftPractice.demo.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(of = {"name","price","quantity","status"})
 public class ItemBuyDto {
 
     @JsonIgnore

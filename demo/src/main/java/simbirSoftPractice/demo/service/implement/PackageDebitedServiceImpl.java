@@ -1,6 +1,7 @@
 package simbirSoftPractice.demo.service.implement;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import simbirSoftPractice.demo.dao.entity.Item;
@@ -14,29 +15,26 @@ import simbirSoftPractice.demo.service.interfaces.PackageDebitedService;
 import java.util.List;
 import java.util.Optional;
 
-import static org.apache.logging.log4j.LogManager.getLogger;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PackageDebitedServiceImpl implements PackageDebitedService {
-
-    private static Logger logger = getLogger(PackageDebitedServiceImpl.class);
 
     private final PackageDebitedRepository debitedRepo;
 
     private final ItemRepository itemRepo;
 
     private Mapper mapper = new Mapper();
+
     @Override
     public Optional<Item> addItem(Long id) {
         if(itemRepo.findById(id).isPresent()){
             Optional<Item> item = itemRepo.findById(id);
             PackageDebited itemDebited = mapper.itemToPackageDebited(item.get());
             debitedRepo.save(itemDebited);
-            logger.info("successfully add in package");
             return item;
         }else{
-            logger.warn("error add in package");
+            log.warn("Error add in package! Method: addItem "+id+" , class: PackageDebitedServiceImpl");
             return Optional.empty();
         }
     }
@@ -46,10 +44,9 @@ public class PackageDebitedServiceImpl implements PackageDebitedService {
         if (debitedRepo.findById(id).isPresent()){
             Optional<PackageDebited> itemDebited = debitedRepo.findById(id);
             debitedRepo.delete(itemDebited.get());
-            logger.info("item from package delete");
             return itemDebited;
         }else{
-            logger.warn("item from package don't delete");
+            log.warn("Item from package don't delete! Method: deleteItem "+id+" , class: PackageDebitedServiceImpl");
             return Optional.empty();
         }
     }
@@ -74,10 +71,9 @@ public class PackageDebitedServiceImpl implements PackageDebitedService {
             }
             List<PackageDebited> debitedList = debitedRepo.findAll();
             debitedRepo.deleteAll();
-            logger.info("successfully debited");
             return debitedList;
         }else{
-            logger.warn("error debited");
+            log.warn("Error debited! Method: listToDebited , class: PackageDebitedServiceImpl");
             return null;
         }
     }
@@ -85,7 +81,6 @@ public class PackageDebitedServiceImpl implements PackageDebitedService {
     @Override
     public List<PackageDebited> findAll() {
         List<PackageDebited> packageList = debitedRepo.findAll();
-        logger.info("List from package found");
         return packageList;
     }
 }

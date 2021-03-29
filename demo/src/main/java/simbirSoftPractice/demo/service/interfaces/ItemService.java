@@ -1,18 +1,26 @@
 package simbirSoftPractice.demo.service.interfaces;
 
-import org.springframework.http.ResponseEntity;
 import simbirSoftPractice.demo.dao.entity.Item;
 import simbirSoftPractice.demo.dto.ItemDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ItemService {
 
     List<Item> findAll();
 
-    ResponseEntity<Item> getById(Long id);
+    Optional<Item> getById(Long id);
 
-    void save(ItemDto newItem);
+    ItemDto save(ItemDto newItem);
 
-    ResponseEntity<String> deleteById(Long id);
+    Optional<Item> deleteById(Long id);
+
+    Optional<Item> buyItem(Long id);
+
+    List<Item> findAllBuyItems();
+
+    List<Item> findAllByInaccurateMatchNameItem(String value);
+
+    List<Item> findAllByInaccurateMatchProductGroup(String value);
 }

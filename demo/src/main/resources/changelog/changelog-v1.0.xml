@@ -5,5 +5,53 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
+    <changeSet id="1" author="Nikita Gaikov">
+        <sql>
+            create table status (id  bigserial not null, status varchar(255), primary key (id));
+            create table company (id  bigserial not null, name varchar(255), primary key (id));
+            create table item (id  bigserial not null, date_update timestamp, name varchar(255), price int4, product_group varchar(255), quantity int4, shop varchar(255), company_id int8, status_id int8, primary key (id));
+            create table package (id  bigserial not null, date_time timestamp, item_id int8, name varchar(255), price int4, quantity int4, shop varchar(255), primary key (id));
+            create table package_debited (id  bigserial not null, date_time timestamp, item_id int8, name varchar(255), price int4, quantity int4, status varchar(255), primary key (id));
+            create table shop_with_items (id  bigserial not null, "order" int8, pay int4, quantity int4, shop_name varchar(255), primary key (id));
+            alter table if exists item add constraint FK66jg5pmwt79f7mapkn9rhjwo2 foreign key (company_id) references company;
+            alter table if exists item add constraint FKa5r9sug9g4f4kif98va9ro3l2 foreign key (status_id) references status;
+        </sql>
+    </changeSet>
+    <changeSet id="2" author="Nikita Gaikov">
+        <sql>
+            insert into status(id,status) values(1,'ONSTORAGE');
+            insert into status(id,status) values(2,'DEBITED');
+            insert into status(id,status) values(3,'BUY');
+
+            insert into company(id,name) values(1,'intel');
+            insert into company(id,name) values(2,'samsung');
+
+            insert into item(
+                id,date_update,name,price,
+                product_group,quantity,
+                shop,company_id,status_id)
+            values(1,'2010-01-01','laptop',30000,'it','1','it-shop',2,2);
+            insert into item(
+                id,date_update,name,price,
+                product_group,quantity,
+                shop,company_id,status_id)
+            values(2,'2015-11-11','laptop',55000,'it','1','it-shop',2,1);
+            insert into item(
+                id,date_update,name,price,
+                product_group,quantity,
+                shop,company_id,status_id)
+            values(3,'2018-02-02','phone',17000,'it','1','it-shop',2,1);
+            insert into item(
+                id,date_update,name,price,
+                product_group,quantity,
+                shop,company_id,status_id)
+            values(4,'2012-04-04','laptop',95000,'new-group','1','my-shop',1,1);
+            insert into item(
+                id,date_update,name,price,
+                product_group,quantity,
+                shop,company_id,status_id)
+            values(5,'2020-01-01','laptop',26000,'new-group','1','my-shop',1,3);
+        </sql>
+    </changeSet>
 
 </databaseChangeLog>

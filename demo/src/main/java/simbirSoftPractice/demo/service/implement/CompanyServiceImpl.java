@@ -7,7 +7,6 @@ import simbirSoftPractice.demo.dao.repository.CompanyRepository;
 import simbirSoftPractice.demo.dto.CompanyDto;
 import simbirSoftPractice.demo.service.interfaces.CompanyService;
 
-
 import java.util.List;
 
 @Service

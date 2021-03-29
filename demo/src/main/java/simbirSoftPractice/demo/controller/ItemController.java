@@ -2,12 +2,18 @@ package simbirSoftPractice.demo.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import simbirSoftPractice.demo.dao.entity.Item;
+import simbirSoftPractice.demo.dto.ItemBuyDto;
 import simbirSoftPractice.demo.dto.ItemDto;
-import simbirSoftPractice.demo.service.implement.ItemServiceImpl;
 import simbirSoftPractice.demo.service.interfaces.ItemService;
 
 import java.util.List;
@@ -36,15 +42,42 @@ public class ItemController {
         return itemService.findAll();
     }
 
-    @PostMapping("/{id}")
+    @DeleteMapping("/{id}")
     @ApiOperation(value = "delete Item", response = Item.class)
-    public ResponseEntity<String> deleteById(@PathVariable Long id){
-       return itemService.deleteById(id);
+    public ResponseEntity<Item> deleteById(@PathVariable Long id){
+       Item item = itemService.deleteById(id).get();
+        return ResponseEntity.ok(item);
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "find Item by id", response = Item.class)
     public ResponseEntity<Item> getById(@PathVariable Long id){
-        return itemService.getById(id);
+        Item item = itemService.getById(id).get();
+        return ResponseEntity.ok(item);
+    }
+
+    @PostMapping("/buy/{id}")
+    @ApiOperation(value = "buy item ", response = Item.class)
+    public ResponseEntity<Item> buyItem(@PathVariable Long id){
+        Item item = itemService.buyItem(id).get();
+        return ResponseEntity.ok(item);
+    }
+
+    @GetMapping("/buyItemList")
+    public ResponseEntity<List<Item>> listBuyItem(){
+        List<Item> itemBuyDtoList = itemService.findAllBuyItems();
+        return ResponseEntity.ok(itemBuyDtoList);
+    }
+
+    @GetMapping("/searchNameItems")
+    public ResponseEntity<List<Item>> findAllByValueNameItems(@RequestBody ItemDto itemDto){
+        List<Item> itemList = itemService.findAllByInaccurateMatchNameItem(itemDto.getValue());
+        return ResponseEntity.ok(itemList);
+    }
+
+    @GetMapping("/searchProductGroup")
+    public ResponseEntity<List<Item>> findAllByValueProductGroup(@RequestBody ItemDto itemDto){
+        List<Item> itemList = itemService.findAllByInaccurateMatchProductGroup(itemDto.getValue());
+        return ResponseEntity.ok(itemList);
     }
 }

@@ -3,12 +3,18 @@ package simbirSoftPractice.demo.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import simbirSoftPractice.demo.dao.entity.Company;
 import simbirSoftPractice.demo.dao.entity.Item;
 import simbirSoftPractice.demo.dao.entity.Status;
 
 
 @ApiModel(value = "class Item")
+@Data
+@NoArgsConstructor
 public class ItemDto {
 
     @JsonIgnore
@@ -23,9 +29,9 @@ public class ItemDto {
     private String status = "ONSTORAGE";
     @ApiModelProperty(value = "company of Item", example = "samsung")
     private String companyDto;
-
-    public ItemDto() {
-    }
+    @ApiModelProperty(value = "shop name where item", example = "m.video")
+    private String shopName;
+    private String value;
 
     public Item itemDtoToItem(ItemDto newItem){
         Item item = new Item();
@@ -38,62 +44,8 @@ public class ItemDto {
         Company newCompany = new Company();
         newCompany.setName(newItem.getCompanyDto());
         item.setCompany(newCompany);
+        item.setShopName(newItem.getShopName());
         return item;
     }
 
-    public ItemDto(String name) {
-        this.name = name;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getCompanyDto() {
-        return companyDto;
-    }
-
-    public void setCompanyDto(String companyDto) {
-        this.companyDto = companyDto;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "ItemDto{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", quantity=" + quantity +
-                ", status=" + status +
-                ", companyDto='" + companyDto + '\'' +
-                '}';
-    }
 }

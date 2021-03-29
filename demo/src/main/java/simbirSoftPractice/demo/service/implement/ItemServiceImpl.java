@@ -1,73 +1,101 @@
 package simbirSoftPractice.demo.service.implement;
 
-
-
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import simbirSoftPractice.demo.dao.entity.Item;
-import simbirSoftPractice.demo.dao.repository.CompanyRepository;
+import simbirSoftPractice.demo.dao.entity.Status;
 import simbirSoftPractice.demo.dao.repository.ItemRepository;
+import simbirSoftPractice.demo.dao.repository.StatusRepository;
 import simbirSoftPractice.demo.dto.ItemDto;
 import simbirSoftPractice.demo.service.interfaces.ItemService;
 
 import java.util.List;
+import java.util.Optional;
 
-import static org.apache.logging.log4j.LogManager.getLogger;
-
-
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
-    private static Logger logger = getLogger(ItemServiceImpl.class);
-    @Autowired
     private final ItemRepository itemRepo;
 
-    @Autowired
-    private final CompanyRepository companyRepo;
-
-    public ItemServiceImpl(ItemRepository itemRepo, CompanyRepository companyRepo) {
-        this.itemRepo = itemRepo;
-        this.companyRepo = companyRepo;
-    }
+    private final StatusRepository statusRepo;
 
     @Override
     public List<Item> findAll() {
         List<Item> items = (List<Item>) itemRepo.findAll();
-        logger.info("successfully find all items!");
         return items;
     }
 
     @Override
-    public ResponseEntity<Item> getById(Long id) {
+    public Optional<Item> getById(Long id) {
         if (itemRepo.findById(id).isPresent()){
-            Item item = itemRepo.findById(id).get();
-            logger.info("successfully find item by id!");
-            return ResponseEntity.ok(item);
+            Optional<Item> item = itemRepo.findById(id);
+            return item;
         }else{
-            logger.error("EXCEPTION when delete item!");
-            return ResponseEntity.notFound().build();
+            log.error("EXCEPTION when delete item! Method: getById " + id+", class: ItemServiceImpl");
+            return Optional.empty();
         }
 
     }
 
     @Override
-    public void save(ItemDto newItem) {
+    public ItemDto save(ItemDto newItem) {
         itemRepo.save(newItem.itemDtoToItem(newItem));
-        logger.info("successfully save new item!");
+        return newItem;
     }
 
     @Override
-    public ResponseEntity<String> deleteById(Long id) {
+    public Optional<Item> deleteById(Long id) {
         if (itemRepo.findById(id).isPresent()){
-            Item deleteItem = itemRepo.findById(id).get();
-            itemRepo.delete(deleteItem);
-            logger.info("successfully delete item!");
-            return ResponseEntity.ok("successfully delete!");
+            Optional<Item> deleteItem = itemRepo.findById(id);
+            itemRepo.delete(deleteItem.get());
+            return deleteItem;
         }else {
-            logger.error("EXCEPTION when delete item!");
-            return ResponseEntity.ok("error!!!");
+            log.error("EXCEPTION when delete item! Method: deleteById "+id+", class: ItemServiceImpl");
+            return Optional.empty();
         }
     }
+
+    @Override
+    public Optional<Item> buyItem(Long id) {
+        if (itemRepo.findById(id).isPresent()){
+            Optional<Item> item = itemRepo.findById(id);
+            Status status = statusRepo.findById(id).get();
+            status.setName("BUY");
+            item.get().setStatus(status);
+            itemRepo.save(item.get());
+            return item;
+        }else {
+            log.error("Exception when item buy! Method : buyItem "+id+", class: ItemServiceImpl");
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public List<Item> findAllBuyItems() {
+        List<Item> items = itemRepo.findAllBuyItems("BUY");
+        if(items.size()==0){
+            log.warn("Items list is null! Method: findAllBuyItems , class: ItemServiceImpl");
+        }else{
+            log.info("Items list");
+        }
+        return items;
+    }
+
+    @Override
+    public List<Item> findAllByInaccurateMatchNameItem(String value) {
+        List<Item> itemList = itemRepo.findAllByInaccurateMatchNameItem(value);
+        return itemList;
+    }
+
+    @Override
+    public List<Item> findAllByInaccurateMatchProductGroup(String value) {
+        List<Item> itemList = itemRepo.findAllByInaccurateMatchProductGroup(value);
+        return itemList;
+    }
+
+
 }

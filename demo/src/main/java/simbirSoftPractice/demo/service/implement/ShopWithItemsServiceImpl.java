@@ -20,6 +20,7 @@ import java.util.List;
 public class ShopWithItemsServiceImpl implements ShopWithItemsService {
 
     private final ItemRepository itemRepo;
+
     private final ShopWithItemsRepository shopWithItemsRepo;
 
     @Override

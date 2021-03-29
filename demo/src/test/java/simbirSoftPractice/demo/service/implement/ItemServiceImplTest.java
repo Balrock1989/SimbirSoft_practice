@@ -132,10 +132,58 @@ class ItemServiceImplTest {
     }
 
     @Test
+    void findAllBuyItemsFail(){
+        boolean isListItemsBuy = itemService.findAllBuyItems().isEmpty();
+        Assert.assertTrue(isListItemsBuy);
+        Mockito.verify(itemRepo,Mockito.times(1)).findAllBuyItems("BUY");
+
+    }
+
+    @Test
     void findAllByInaccurateMatchNameItem() {
+        Item item = new Item();
+        item.setId(1L);
+        item.setName("new-product");
+        List<Item> itemList = new ArrayList<>();
+        itemList.add(item);
+        Mockito.doReturn(itemList)
+                .when(itemRepo)
+                .findAllByInaccurateMatchNameItem("w-p");
+        boolean isItemFind = itemService.findAllByInaccurateMatchNameItem("w-p").isEmpty();
+        Assert.assertFalse(isItemFind);
+        Mockito.verify(itemRepo,Mockito.times(1)).findAllByInaccurateMatchNameItem("w-p");
+    }
+
+    @Test
+    void findAllByInaccurateMatchNameItemFail(){
+        boolean isItemFind = itemService.findAllByInaccurateMatchNameItem("w-p").isEmpty();
+        Assert.assertTrue(isItemFind);
+        Mockito.verify(itemRepo,Mockito.times(1)).findAllByInaccurateMatchNameItem("w-p");
     }
 
     @Test
     void findAllByInaccurateMatchProductGroup() {
+        Item itemOne = new Item();
+        itemOne.setId(1L);
+        itemOne.setProductGroup("it");
+        Item itemTwo = new Item();
+        itemTwo.setId(2L);
+        itemTwo.setProductGroup("it-group");
+        List<Item> itemList = new ArrayList<>();
+        itemList.add(itemOne);
+        itemList.add(itemTwo);
+        Mockito.doReturn(itemList)
+                .when(itemRepo)
+                .findAllByInaccurateMatchProductGroup("t");
+        boolean isListItemFind = itemService.findAllByInaccurateMatchProductGroup("t").isEmpty();
+        Assert.assertFalse(isListItemFind);
+        Mockito.verify(itemRepo,Mockito.times(1)).findAllByInaccurateMatchProductGroup("t");
+    }
+
+    @Test
+    void findAllByInaccurateMatchProductGroupFail(){
+        boolean isListItemFind = itemService.findAllByInaccurateMatchProductGroup("t").isEmpty();
+        Assert.assertTrue(isListItemFind);
+        Mockito.verify(itemRepo,Mockito.times(1)).findAllByInaccurateMatchProductGroup("t");
     }
 }
